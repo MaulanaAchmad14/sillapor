@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "594803265396",
+    "project_id": "importan-4e50e",
+    "storage_bucket": "importan-4e50e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:594803265396:android:28ff9b23f2c27c46ea2621",
+        "android_client_info": {
+          "package_name": "com.example.importan_skripsi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeFT3I4O2-CvS7gi-clLWSSx_tYI34eNM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -2,6 +2,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:importan_skripsi/pages/signup_page.dart';
+import 'package:importan_skripsi/services/auth.dart';
 import 'package:importan_skripsi/theme.dart';
 import 'package:importan_skripsi/widgets/primary_button.dart';
 import 'package:importan_skripsi/widgets/text_input.dart';
@@ -16,6 +17,15 @@ class SignInPages extends StatefulWidget {
 class _SignInPagesState extends State<SignInPages> {
   TextEditingController emailText = TextEditingController();
   TextEditingController passwordText = TextEditingController();
+
+  void login() async {
+    try {
+      await AuthService.login(email: emailText.text, password: passwordText.text);
+      if (mounted) Navigator.pushNamed(context, '/home');
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+    }
+  }
 
   @override
   void dispose() {
@@ -64,7 +74,7 @@ class _SignInPagesState extends State<SignInPages> {
                   const SizedBox(height: 8),
                   TextInput(controller: passwordText, validator: (value) => value!.length > 8 ? null : 'Password minimal 8 karakter'),
                   const SizedBox(height: 40),
-                  PrimaryButton(label: "Sign In", onPressed: () {}),
+                  PrimaryButton(label: "Sign In", onPressed: () => login()),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20),
                     child: Center(

@@ -22,7 +22,7 @@ class _ReportPageState extends State<ReportPage> {
 
   @override
   Widget build(BuildContext context) {
-    Widget header() {
+    PreferredSizeWidget header() {
       return AppBar(
         backgroundColor: primaryColor,
         automaticallyImplyLeading: false,
@@ -122,9 +122,9 @@ class _ReportPageState extends State<ReportPage> {
     }
 
     return Scaffold(
+      appBar: header(),
       body: ListView(
         children: [
-          header(),
           body(),
         ],
       ),

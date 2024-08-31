@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:importan_skripsi/theme.dart';
 
 class ProfilePage extends StatelessWidget {
+  const ProfilePage({super.key});
+
   // const ProfilePage({super.key});
 
   // @override
@@ -142,7 +144,7 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xffffff),
+        backgroundColor: const Color(0x00ffffff),
         elevation: 0,
         centerTitle: true,
         iconTheme: IconThemeData(
@@ -176,7 +178,7 @@ class ProfilePage extends StatelessWidget {
                 Container(
                   width: 120,
                   height: 120,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
                       image: AssetImage('assets/show_image.png'),
@@ -187,7 +189,7 @@ class ProfilePage extends StatelessWidget {
                     child: Container(
                       width: 28,
                       height: 28,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                         color: Color(0xffffffff),
                       ),
@@ -201,7 +203,7 @@ class ProfilePage extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 16,
                 ),
                 Text(
@@ -212,7 +214,7 @@ class ProfilePage extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 40,
                 ),
                 GestureDetector(
@@ -221,14 +223,14 @@ class ProfilePage extends StatelessWidget {
                   },
                   child: Row(
                     children: [
-                      Image(
+                      const Image(
                         width: 26,
                         height: 26,
                         image: AssetImage(
                           'assets/ic_person.png',
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 16,
                       ),
                       Text(
@@ -242,7 +244,7 @@ class ProfilePage extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 GestureDetector(
@@ -251,14 +253,14 @@ class ProfilePage extends StatelessWidget {
                   },
                   child: Row(
                     children: [
-                      Image(
+                      const Image(
                         width: 26,
                         height: 26,
                         image: AssetImage(
                           'assets/ic_help.png',
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 16,
                       ),
                       Text(
@@ -272,7 +274,7 @@ class ProfilePage extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 GestureDetector(
@@ -282,14 +284,14 @@ class ProfilePage extends StatelessWidget {
                   },
                   child: Row(
                     children: [
-                      Image(
+                      const Image(
                         width: 26,
                         height: 26,
                         image: AssetImage(
                           'assets/ic_logout.png',
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 16,
                       ),
                       Text(

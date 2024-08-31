@@ -5,6 +5,8 @@ import 'package:importan_skripsi/home/profile_page.dart';
 import 'package:importan_skripsi/home/report_page.dart';
 
 class MainPage extends StatefulWidget {
+  const MainPage({super.key});
+
   @override
   State<MainPage> createState() => _MainPageState();
 }
@@ -16,7 +18,7 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     Widget customBottomNav() {
       return ClipRRect(
-        borderRadius: BorderRadius.vertical(
+        borderRadius: const BorderRadius.vertical(
           top: Radius.circular(20),
         ),
         child: BottomNavigationBar(
@@ -26,12 +28,12 @@ class _MainPageState extends State<MainPage> {
               currentIndex = value;
             });
           },
-          backgroundColor: Color(0xff4141A4),
+          backgroundColor: const Color(0xff4141A4),
           type: BottomNavigationBarType.fixed,
           items: [
             BottomNavigationBarItem(
               icon: Container(
-                margin: EdgeInsets.only(
+                margin: const EdgeInsets.only(
                   top: 20,
                   bottom: 10,
                 ),
@@ -39,14 +41,14 @@ class _MainPageState extends State<MainPage> {
                   'assets/icon_home.png',
                   width: 23,
                   color:
-                      currentIndex == 0 ? Color(0xffffffff) : Color(0xff989BA1),
+                      currentIndex == 0 ? const Color(0xffffffff) : const Color(0xff989BA1),
                 ),
               ),
               label: '',
             ),
             BottomNavigationBarItem(
               icon: Container(
-                margin: EdgeInsets.only(
+                margin: const EdgeInsets.only(
                   top: 20,
                   bottom: 10,
                 ),
@@ -54,14 +56,14 @@ class _MainPageState extends State<MainPage> {
                   'assets/icon_report.png',
                   width: 23,
                   color:
-                      currentIndex == 1 ? Color(0xffffffff) : Color(0xff989BA1),
+                      currentIndex == 1 ? const Color(0xffffffff) : const Color(0xff989BA1),
                 ),
               ),
               label: '',
             ),
             BottomNavigationBarItem(
               icon: Container(
-                margin: EdgeInsets.only(
+                margin: const EdgeInsets.only(
                   top: 20,
                   bottom: 10,
                 ),
@@ -69,14 +71,14 @@ class _MainPageState extends State<MainPage> {
                   'assets/icon_history.png',
                   width: 23,
                   color:
-                      currentIndex == 2 ? Color(0xffffffff) : Color(0xff989BA1),
+                      currentIndex == 2 ? const Color(0xffffffff) : const Color(0xff989BA1),
                 ),
               ),
               label: '',
             ),
             BottomNavigationBarItem(
               icon: Container(
-                margin: EdgeInsets.only(
+                margin: const EdgeInsets.only(
                   top: 20,
                   bottom: 10,
                 ),
@@ -84,7 +86,7 @@ class _MainPageState extends State<MainPage> {
                   'assets/icon_user.png',
                   width: 23,
                   color:
-                      currentIndex == 3 ? Color(0xffffffff) : Color(0xff989BA1),
+                      currentIndex == 3 ? const Color(0xffffffff) : const Color(0xff989BA1),
                 ),
               ),
               label: '',
@@ -97,13 +99,13 @@ class _MainPageState extends State<MainPage> {
     Widget body() {
       switch (currentIndex) {
         case 0:
-          return HomePage();
+          return const HomePage();
         case 1:
-          return ReportPage();
+          return const ReportPage();
         case 2:
-          return HistoryPage();
+          return const HistoryPage();
         case 3:
-          return ProfilePage();
+          return const ProfilePage();
 
         default:
           return Container();

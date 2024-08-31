@@ -15,16 +15,16 @@ class _SplashPageState extends State<SplashPage> {
   void initState() {
     super.initState();
 
-    Timer(Duration(seconds: 3), () {
+    Timer(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => SignInPages()));
+          context, MaterialPageRoute(builder: (context) => const SignInPages()));
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff4141A4),
+      backgroundColor: const Color(0xff4141A4),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

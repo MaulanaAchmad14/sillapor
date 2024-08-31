@@ -1,7 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:importan_skripsi/services/create.dart';
 import 'package:importan_skripsi/theme.dart';
 
-class ReportPage extends StatelessWidget {
+class ReportPage extends StatefulWidget {
+  const ReportPage({super.key});
+
+  @override
+  State<ReportPage> createState() => _ReportPageState();
+}
+
+class _ReportPageState extends State<ReportPage> {
+  final Create _create = Create();
+
+  TextEditingController report = TextEditingController();
+  @override
+  void dispose() {
+    report.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget header() {
@@ -10,7 +28,7 @@ class ReportPage extends StatelessWidget {
         automaticallyImplyLeading: false,
         elevation: 0,
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'Laporkan Keluhan Anda',
         ),
       );
@@ -36,11 +54,16 @@ class ReportPage extends StatelessWidget {
                     ),
                   ),
                   TextFormField(
+                    controller: report,
                     maxLines: null,
-                    style: subTitleTextStyle,
+                    style: subTitleTextStyle.copyWith(
+                      fontSize: 14,
+                    ),
                     decoration: InputDecoration(
                       hintText: 'Apa keluhan anda?',
-                      hintStyle: subTitleTextStyle,
+                      hintStyle: subTitleTextStyle.copyWith(
+                        fontSize: 14,
+                      ),
                       border: OutlineInputBorder(
                         borderSide: BorderSide(color: primaryColor, width: 2.0),
                       ),
@@ -63,16 +86,20 @@ class ReportPage extends StatelessWidget {
         width: double.infinity,
         height: 50,
         child: ElevatedButton(
-          onPressed: () {
-            // Add your logic to handle the send button press
-            // For example, you can send the complaint to a server.
+          onPressed: () async {
+            final String reportValue = report.text;
+
+            await _create.addReport(report: reportValue);
+
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => ReportPage()));
           },
           style: ElevatedButton.styleFrom(
-            primary: primaryColor,
+            backgroundColor: primaryColor,
           ),
-          child: Text(
+          child: const Text(
             'Kirim',
-            style: TextStyle(fontSize: 16),
+            style: TextStyle(fontSize: 16, color: Colors.white),
           ),
         ),
       );

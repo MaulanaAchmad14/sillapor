@@ -1,8 +1,26 @@
-import 'package:flutter/material.dart';
-import 'package:importan_skripsi/theme.dart';
+import 'dart:typed_data';
 
-class EditProfilePage extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:importan_skripsi/theme.dart';
+import 'package:importan_skripsi/utils.dart';
+
+class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
+
+  @override
+  State<EditProfilePage> createState() => _EditProfilePageState();
+}
+
+class _EditProfilePageState extends State<EditProfilePage> {
+  Uint8List? _image;
+
+  void selectImage() async {
+    Uint8List img = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = img;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -10,19 +28,19 @@ class EditProfilePage extends StatelessWidget {
       return AppBar(
         backgroundColor: primaryColor,
         leading: IconButton(
-          icon: Icon(Icons.close),
+          icon: const Icon(Icons.close),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
         elevation: 0,
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'Edit Profile',
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.check),
+            icon: const Icon(Icons.check),
             onPressed: () {},
           ),
         ],
@@ -31,14 +49,14 @@ class EditProfilePage extends StatelessWidget {
 
     Widget nameInput() {
       return Container(
-        margin: EdgeInsets.only(
+        margin: const EdgeInsets.only(
           top: 30,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Name',
+              'Full Name',
               style: titleTextStyle.copyWith(
                 fontSize: 13,
               ),
@@ -65,7 +83,7 @@ class EditProfilePage extends StatelessWidget {
 
     Widget usernameInput() {
       return Container(
-        margin: EdgeInsets.only(
+        margin: const EdgeInsets.only(
           top: 30,
         ),
         child: Column(
@@ -99,14 +117,14 @@ class EditProfilePage extends StatelessWidget {
 
     Widget emailInput() {
       return Container(
-        margin: EdgeInsets.only(
+        margin: const EdgeInsets.only(
           top: 30,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Name',
+              'Email',
               style: titleTextStyle.copyWith(
                 fontSize: 13,
               ),
@@ -115,6 +133,40 @@ class EditProfilePage extends StatelessWidget {
               style: subTitleTextStyle,
               decoration: InputDecoration(
                 hintText: 'Bebee@gmail.com',
+                hintStyle: subTitleTextStyle.copyWith(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w400,
+                ),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: primaryColor,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    Widget passwordInput() {
+      return Container(
+        margin: const EdgeInsets.only(
+          top: 30,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Password',
+              style: titleTextStyle.copyWith(
+                fontSize: 13,
+              ),
+            ),
+            TextFormField(
+              style: subTitleTextStyle,
+              decoration: InputDecoration(
+                hintText: 'Bebee',
                 hintStyle: subTitleTextStyle.copyWith(
                   fontSize: 13,
                   fontWeight: FontWeight.w400,
@@ -140,24 +192,37 @@ class EditProfilePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              width: 100,
-              height: 100,
-              margin: EdgeInsets.only(
-                top: defaultMargin,
-              ),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  image: AssetImage(
-                    'assets/show_image.png',
+            Stack(
+              children: [
+                Container(
+                  width: 100,
+                  height: 100,
+                  margin: EdgeInsets.only(
+                    top: defaultMargin,
+                  ),
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: AssetImage(
+                        'assets/show_image.png',
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                Positioned(
+                  child: IconButton(
+                    onPressed: selectImage,
+                    icon: Icon(Icons.add_a_photo),
+                  ),
+                  bottom: -15,
+                  left: 60,
+                ),
+              ],
             ),
             nameInput(),
             usernameInput(),
             emailInput(),
+            passwordInput(),
           ],
         ),
       );

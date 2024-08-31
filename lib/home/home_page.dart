@@ -2,8 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:importan_skripsi/theme.dart';
 import 'package:importan_skripsi/widgets/information_tile.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  // final _userStream =
+  //     FirebaseFirestore.instance.collection('DataInformation').snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +47,7 @@ class HomePage extends StatelessWidget {
             Container(
               width: 54,
               height: 54,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 image: DecorationImage(
                   image: AssetImage(
@@ -72,10 +80,10 @@ class HomePage extends StatelessWidget {
 
     Widget Information() {
       return Container(
-        margin: EdgeInsets.only(
+        margin: const EdgeInsets.only(
           top: 14,
         ),
-        child: Column(
+        child: const Column(
           children: [
             InformationTile(),
           ],

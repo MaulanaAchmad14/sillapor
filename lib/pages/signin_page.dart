@@ -6,6 +6,8 @@ import 'package:importan_skripsi/pages/signup_page.dart';
 import 'package:importan_skripsi/theme.dart';
 
 class SignInPages extends StatefulWidget {
+  const SignInPages({super.key});
+
   @override
   State<SignInPages> createState() => _SignInPagesState();
 }
@@ -36,7 +38,7 @@ class _SignInPagesState extends State<SignInPages> {
                 'Welcome to Importan',
                 style: subTitleTextStyle,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               Center(
@@ -50,8 +52,8 @@ class _SignInPagesState extends State<SignInPages> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: 40,
+              const SizedBox(
+                height: 20,
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,7 +62,7 @@ class _SignInPagesState extends State<SignInPages> {
                     'Email Address',
                     style: titleTextStyle,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 8,
                   ),
                   TextFormField(
@@ -80,7 +82,7 @@ class _SignInPagesState extends State<SignInPages> {
                       }
                     },
                     decoration: InputDecoration(
-                      fillColor: Color(0xffF1F0F5),
+                      fillColor: const Color(0xffF1F0F5),
                       filled: true,
                       enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(100),
@@ -89,21 +91,22 @@ class _SignInPagesState extends State<SignInPages> {
                         borderRadius: BorderRadius.circular(100),
                         borderSide: BorderSide(
                           color: isEmailValid
-                              ? Color(0xff4141A4)
-                              : Color(0xffFD4F56),
+                              ? const Color(0xff4141A4)
+                              : const Color(0xffFD4F56),
                         ),
                       ),
                       hintText: '',
                     ),
                     style: TextStyle(
-                      color:
-                          isEmailValid ? Color(0xff4141A4) : Color(0xffFD4F56),
+                      color: isEmailValid
+                          ? const Color(0xff4141A4)
+                          : const Color(0xffFD4F56),
                     ),
                   ),
                 ],
               ),
-              SizedBox(
-                height: 20,
+              const SizedBox(
+                height: 10,
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -112,20 +115,20 @@ class _SignInPagesState extends State<SignInPages> {
                     'Password',
                     style: titleTextStyle,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 8,
                   ),
                   TextFormField(
                     obscureText: true,
                     decoration: InputDecoration(
-                      fillColor: Color(0xffF1F0F5),
+                      fillColor: const Color(0xffF1F0F5),
                       filled: true,
                       enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(100),
                           borderSide: BorderSide.none),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(100),
-                        borderSide: BorderSide(
+                        borderSide: const BorderSide(
                           color: Color(0xff4141A4),
                         ),
                       ),
@@ -134,15 +137,15 @@ class _SignInPagesState extends State<SignInPages> {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
-              Container(
+              SizedBox(
                 width: 400,
                 height: 50,
                 child: TextButton(
                   style: TextButton.styleFrom(
-                    backgroundColor: Color(0xff4141A4),
+                    backgroundColor: const Color(0xff4141A4),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(66),
                     ),
@@ -151,7 +154,7 @@ class _SignInPagesState extends State<SignInPages> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => MainPage(),
+                        builder: (context) => const MainPage(),
                       ),
                     );
                   },
@@ -172,14 +175,14 @@ class _SignInPagesState extends State<SignInPages> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SignUpPage(),
+                          builder: (context) => const SignUpPage(),
                         ),
                       );
                     },
                     child: Text(
                       'Create New Account',
                       style: GoogleFonts.poppins(
-                        color: Color(0xffB3B5C4),
+                        color: const Color(0xffB3B5C4),
                         fontSize: 14,
                         fontWeight: FontWeight.w300,
                       ),

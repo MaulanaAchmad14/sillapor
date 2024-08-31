@@ -23,4 +23,16 @@ class Create {
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));
   }
+
+  Future<void> addReport({
+    required String report,
+  }) {
+    CollectionReference reports = firestore.collection('DataReport');
+    return reports
+        .add({
+          'report': report,
+        })
+        .then((value) => print("report added"))
+        .catchError((error) => print("failed to add report: $error"));
+  }
 }

@@ -11,7 +11,7 @@ class HistoryPage extends StatelessWidget {
       return AppBar(
         backgroundColor: primaryColor,
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'Report History',
         ),
         elevation: 0,
@@ -21,7 +21,7 @@ class HistoryPage extends StatelessWidget {
 
     Widget emptyWishlist() {
       return Expanded(
-        child: Container(
+        child: SizedBox(
           width: double.infinity,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -30,7 +30,7 @@ class HistoryPage extends StatelessWidget {
                 'assets/no_history.png',
                 height: 74,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 23,
               ),
               Text(
@@ -40,22 +40,22 @@ class HistoryPage extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 12,
               ),
               Text(
                 'Laporkan Keluhan Anda',
                 style: titleTextStyle,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
-              Container(
+              SizedBox(
                 height: 44,
                 child: TextButton(
                   onPressed: () {},
                   style: TextButton.styleFrom(
-                    padding: EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                       vertical: 10,
                       horizontal: 24,
                     ),
@@ -87,9 +87,7 @@ class HistoryPage extends StatelessWidget {
             padding: EdgeInsets.symmetric(
               horizontal: defaultMargin,
             ),
-            children: [
-              HistoryCard(),
-              HistoryCard(),
+            children: const [
               HistoryCard(),
             ],
           ),

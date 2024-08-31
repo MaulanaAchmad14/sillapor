@@ -7,6 +7,8 @@ import 'package:importan_skripsi/services/create.dart';
 import 'package:importan_skripsi/theme.dart';
 
 class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
+
   @override
   State<SignUpPage> createState() => _SignUpPageState();
 }
@@ -94,7 +96,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 'Create Account',
                 style: subTitleTextStyle,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               isUploaded ? showedImages() : uploadedImages(),
@@ -109,7 +111,7 @@ class _SignUpPageState extends State<SignUpPage> {
               //     ],
               //   ),
               // ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               Column(
@@ -119,13 +121,13 @@ class _SignUpPageState extends State<SignUpPage> {
                     'Full Name',
                     style: titleTextStyle,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 8,
                   ),
                   TextFormField(
                     controller: fullName,
                     decoration: InputDecoration(
-                      fillColor: Color(0xffF1F0F5),
+                      fillColor: const Color(0xffF1F0F5),
                       filled: true,
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(100),
@@ -133,7 +135,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(100),
-                        borderSide: BorderSide(
+                        borderSide: const BorderSide(
                           color: Color(0xff4141A4),
                         ),
                       ),
@@ -142,7 +144,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Column(
@@ -152,7 +154,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     'Phone',
                     style: titleTextStyle,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 8,
                   ),
                   TextFormField(
@@ -162,7 +164,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       FilteringTextInputFormatter.digitsOnly
                     ],
                     decoration: InputDecoration(
-                      fillColor: Color(0xffF1F0F5),
+                      fillColor: const Color(0xffF1F0F5),
                       filled: true,
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(100),
@@ -170,7 +172,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(100),
-                        borderSide: BorderSide(
+                        borderSide: const BorderSide(
                           color: Color(0xff4141A4),
                         ),
                       ),
@@ -179,7 +181,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Column(
@@ -189,7 +191,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     'Email Address',
                     style: titleTextStyle,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 8,
                   ),
                   TextFormField(
@@ -209,7 +211,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       }
                     },
                     decoration: InputDecoration(
-                      fillColor: Color(0xffF1F0F5),
+                      fillColor: const Color(0xffF1F0F5),
                       filled: true,
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(100),
@@ -219,20 +221,20 @@ class _SignUpPageState extends State<SignUpPage> {
                         borderRadius: BorderRadius.circular(100),
                         borderSide: BorderSide(
                           color: isEmailValid
-                              ? Color(0xff4141A4)
-                              : Color(0xffFD4F56),
+                              ? const Color(0xff4141A4)
+                              : const Color(0xffFD4F56),
                         ),
                       ),
                       hintText: '',
                     ),
                     style: TextStyle(
                       color:
-                          isEmailValid ? Color(0xff4141A4) : Color(0xffFD4F56),
+                          isEmailValid ? const Color(0xff4141A4) : const Color(0xffFD4F56),
                     ),
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Column(
@@ -242,13 +244,13 @@ class _SignUpPageState extends State<SignUpPage> {
                     'Password',
                     style: titleTextStyle,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 8,
                   ),
                   TextFormField(
                     controller: password,
                     decoration: InputDecoration(
-                      fillColor: Color(0xffF1F0F5),
+                      fillColor: const Color(0xffF1F0F5),
                       filled: true,
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(100),
@@ -256,7 +258,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(100),
-                        borderSide: BorderSide(
+                        borderSide: const BorderSide(
                           color: Color(0xff4141A4),
                         ),
                       ),
@@ -265,15 +267,15 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
-              Container(
+              SizedBox(
                 width: 400,
                 height: 50,
                 child: TextButton(
                   style: TextButton.styleFrom(
-                    backgroundColor: Color(0xff4141A4),
+                    backgroundColor: const Color(0xff4141A4),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(66),
                     ),
@@ -295,7 +297,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => SignInPages()),
+                        MaterialPageRoute(builder: (context) => const SignInPages()),
                       );
                     }
                   },
@@ -305,7 +307,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Center(
@@ -314,7 +316,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => SignInPages(),
+                        builder: (context) => const SignInPages(),
                       ),
                     );
                   },
@@ -323,7 +325,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     child: Text(
                       'Back to Sign In',
                       style: GoogleFonts.poppins(
-                        color: Color(0xffB3B5C4),
+                        color: const Color(0xffB3B5C4),
                         fontSize: 14,
                         fontWeight: FontWeight.w300,
                       ),
@@ -344,7 +346,7 @@ class _SignUpPageState extends State<SignUpPage> {
         emailController.text.isEmpty ||
         password.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Mohon isi semua inputan.'),
         ),
       );

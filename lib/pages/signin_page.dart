@@ -15,7 +15,16 @@ class SignInPages extends StatefulWidget {
 class _SignInPagesState extends State<SignInPages> {
   bool isEmailValid = true;
 
-  TextEditingController emailController = TextEditingController(text: '');
+  TextEditingController emailText = TextEditingController();
+  TextEditingController passwordText = TextEditingController();
+
+  @override
+  void dispose() {
+    emailText.dispose();
+    passwordText.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -66,41 +75,25 @@ class _SignInPagesState extends State<SignInPages> {
                     height: 8,
                   ),
                   TextFormField(
-                    controller: emailController,
+                    controller: emailText,
                     onChanged: (value) {
-                      print(value);
-                      bool isValid = EmailValidator.validate(value);
-                      print(isValid);
-                      if (isValid) {
-                        setState(() {
-                          isEmailValid = true;
-                        });
-                      } else {
-                        setState(() {
-                          isEmailValid = false;
-                        });
-                      }
+                      isEmailValid = EmailValidator.validate(value);
+                      setState(() {});
                     },
                     decoration: InputDecoration(
                       fillColor: const Color(0xffF1F0F5),
                       filled: true,
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(100),
-                          borderSide: BorderSide.none),
+                      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(100), borderSide: BorderSide.none),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(100),
                         borderSide: BorderSide(
-                          color: isEmailValid
-                              ? const Color(0xff4141A4)
-                              : const Color(0xffFD4F56),
+                          color: isEmailValid ? const Color(0xff4141A4) : const Color(0xffFD4F56),
                         ),
                       ),
                       hintText: '',
                     ),
                     style: TextStyle(
-                      color: isEmailValid
-                          ? const Color(0xff4141A4)
-                          : const Color(0xffFD4F56),
+                      color: isEmailValid ? const Color(0xff4141A4) : const Color(0xffFD4F56),
                     ),
                   ),
                 ],
@@ -119,13 +112,12 @@ class _SignInPagesState extends State<SignInPages> {
                     height: 8,
                   ),
                   TextFormField(
+                    controller: passwordText,
                     obscureText: true,
                     decoration: InputDecoration(
                       fillColor: const Color(0xffF1F0F5),
                       filled: true,
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(100),
-                          borderSide: BorderSide.none),
+                      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(100), borderSide: BorderSide.none),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(100),
                         borderSide: const BorderSide(
@@ -137,9 +129,7 @@ class _SignInPagesState extends State<SignInPages> {
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 40,
-              ),
+              const SizedBox(height: 40),
               SizedBox(
                 width: 400,
                 height: 50,

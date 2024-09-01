@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-class TextInput extends StatelessWidget {
-  const TextInput({super.key, required this.controller, this.onChanged, this.validator, this.obscure = false});
+class InputText extends StatelessWidget {
+  const InputText({super.key, required this.controller, this.onChanged, this.validator, this.obscure = false, this.formatter});
   final TextEditingController controller;
   final void Function(String)? onChanged;
   final String? Function(String?)? validator;
   final bool obscure;
+  final List<TextInputFormatter>? formatter;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      inputFormatters: formatter,
       obscureText: obscure,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: validator,

@@ -1,10 +1,16 @@
+import 'dart:convert';
+
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:importan_skripsi/models/user_model.dart';
 import 'package:importan_skripsi/pages/signin_page.dart';
-import 'package:importan_skripsi/services/create.dart';
+import 'package:importan_skripsi/services/auth.dart';
 import 'package:importan_skripsi/theme.dart';
+import 'package:importan_skripsi/widgets/primary_button.dart';
+import 'package:importan_skripsi/widgets/text_input.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -16,21 +22,40 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   bool isEmailValid = true;
   bool isUploaded = false;
+  String? imgString;
 
-  final Create _create = Create();
+  final nameText = TextEditingController();
+  final phoneText = TextEditingController();
+  final emailText = TextEditingController();
+  final passwordText = TextEditingController();
 
-  TextEditingController emailController = TextEditingController(text: '');
-  TextEditingController fullName = TextEditingController();
-  TextEditingController phone = TextEditingController();
-  TextEditingController password = TextEditingController();
+  final key = GlobalKey<FormState>();
+
   @override
   void dispose() {
-    fullName.dispose();
-    emailController.dispose();
-    phone.dispose();
-    password.dispose();
+    nameText.dispose();
+    phoneText.dispose();
+    emailText.dispose();
+    passwordText.dispose();
 
     super.dispose();
+  }
+
+  void signUp() async {
+    try {
+      if (imgString == null && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Photo cannot be empty')));
+        return;
+      }
+
+      if (key.currentState?.validate() ?? false) {
+        final user = UserModel(name: nameText.text, phone: phoneText.text);
+        await AuthService.register(email: emailText.text, password: passwordText.text, image: imgString!, user: user);
+        if (mounted) Navigator.pushNamed(context, '/home');
+      }
+    } catch (e) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+    }
   }
 
   @override
@@ -38,18 +63,22 @@ class _SignUpPageState extends State<SignUpPage> {
     Widget uploadedImages() {
       return Center(
         child: InkWell(
-          onTap: () {
-            setState(() {
-              isUploaded = !isUploaded;
-            });
+          onTap: () async {
+            final picker = ImagePicker();
+            final file = await picker.pickImage(source: ImageSource.camera);
+            if (file != null) {
+              final fileBytes = await file.readAsBytes();
+              imgString = base64Encode(fileBytes);
+              setState(() {});
+            }
           },
           child: Column(
             children: [
-              Image.asset(
-                'assets/upload_pic.png',
-                width: 120,
-                height: 120,
-              ),
+              if (imgString == null) ...[
+                Image.asset('assets/upload_pic.png', width: 120, height: 120),
+              ] else ...[
+                ClipRRect(borderRadius: BorderRadius.circular(100), child: Image.memory(base64Decode(imgString!), width: 120, height: 120, fit: BoxFit.cover)),
+              ]
             ],
           ),
         ),
@@ -66,11 +95,7 @@ class _SignUpPageState extends State<SignUpPage> {
           },
           child: Column(
             children: [
-              Image.asset(
-                'assets/show_image.png',
-                width: 120,
-                height: 120,
-              ),
+              Image.asset('assets/show_image.png', width: 120, height: 120),
             ],
           ),
         ),
@@ -85,273 +110,84 @@ class _SignUpPageState extends State<SignUpPage> {
             left: 24,
             right: 24,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Sign Up',
-                style: titleTextStyle,
-              ),
-              Text(
-                'Create Account',
-                style: subTitleTextStyle,
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              isUploaded ? showedImages() : uploadedImages(),
-              // Center(
-              //   child: Column(
-              //     children: [
-              //       Image.asset(
-              //         'assets/upload_pic.png',
-              //         width: 120,
-              //         height: 120,
-              //       )
-              //     ],
-              //   ),
-              // ),
-              const SizedBox(
-                height: 50,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Full Name',
-                    style: titleTextStyle,
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  TextFormField(
-                    controller: fullName,
-                    decoration: InputDecoration(
-                      fillColor: const Color(0xffF1F0F5),
-                      filled: true,
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(100),
-                        borderSide: BorderSide.none,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(100),
-                        borderSide: const BorderSide(
-                          color: Color(0xff4141A4),
-                        ),
-                      ),
-                      hintText: '',
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Phone',
-                    style: titleTextStyle,
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  TextFormField(
-                    controller: phone,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.digitsOnly
-                    ],
-                    decoration: InputDecoration(
-                      fillColor: const Color(0xffF1F0F5),
-                      filled: true,
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(100),
-                        borderSide: BorderSide.none,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(100),
-                        borderSide: const BorderSide(
-                          color: Color(0xff4141A4),
-                        ),
-                      ),
-                      hintText: '',
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Email Address',
-                    style: titleTextStyle,
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  TextFormField(
-                    controller: emailController,
-                    onChanged: (value) {
-                      print(value);
-                      bool isValid = EmailValidator.validate(value);
-                      print(isValid);
-                      if (isValid) {
-                        setState(() {
-                          isEmailValid = true;
-                        });
-                      } else {
-                        setState(() {
-                          isEmailValid = false;
-                        });
-                      }
-                    },
-                    decoration: InputDecoration(
-                      fillColor: const Color(0xffF1F0F5),
-                      filled: true,
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(100),
-                        borderSide: BorderSide.none,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(100),
-                        borderSide: BorderSide(
-                          color: isEmailValid
-                              ? const Color(0xff4141A4)
-                              : const Color(0xffFD4F56),
-                        ),
-                      ),
-                      hintText: '',
-                    ),
-                    style: TextStyle(
-                      color:
-                          isEmailValid ? const Color(0xff4141A4) : const Color(0xffFD4F56),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Password',
-                    style: titleTextStyle,
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  TextFormField(
-                    controller: password,
-                    decoration: InputDecoration(
-                      fillColor: const Color(0xffF1F0F5),
-                      filled: true,
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(100),
-                        borderSide: BorderSide.none,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(100),
-                        borderSide: const BorderSide(
-                          color: Color(0xff4141A4),
-                        ),
-                      ),
-                      hintText: '',
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              SizedBox(
-                width: 400,
-                height: 50,
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                    backgroundColor: const Color(0xff4141A4),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(66),
-                    ),
-                  ),
-                  onPressed: () async {
-                    if (_validateInput()) {
-                      final String fullNameValue = fullName.text.toUpperCase();
-
-                      final int phoneValue = int.tryParse(phone.text) ?? 0;
-
-                      final String emailValue = emailController.text;
-                      final String passwordValue = password.text;
-
-                      await _create.addUser(
-                          fullName: fullNameValue,
-                          phone: phoneValue,
-                          emailAddress: emailValue,
-                          Password: passwordValue);
-
-                      Navigator.pushReplacement(
+          child: Form(
+            key: key,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Sign Up', style: titleTextStyle),
+                Text('Create Account', style: subTitleTextStyle),
+                const SizedBox(height: 40),
+                isUploaded ? showedImages() : uploadedImages(),
+                const SizedBox(height: 50),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Full Name', style: titleTextStyle.copyWith(fontSize: 14)),
+                    const SizedBox(height: 8),
+                    InputText(controller: nameText, validator: (value) => value!.length < 8 ? 'Nama lengkap minmal 8 karakter' : null),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Phone', style: titleTextStyle.copyWith(fontSize: 14)),
+                    const SizedBox(height: 8),
+                    InputText(controller: phoneText, validator: (value) => value!.length < 12 ? 'Nomor Telepon minimal 12 karakter' : null, formatter: [FilteringTextInputFormatter.digitsOnly]),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Email', style: titleTextStyle.copyWith(fontSize: 14)),
+                    const SizedBox(height: 8),
+                    InputText(controller: emailText, validator: (value) => EmailValidator.validate(value!) ? null : 'Email tidak valid'),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Password', style: titleTextStyle.copyWith(fontSize: 14)),
+                    const SizedBox(height: 8),
+                    InputText(controller: passwordText, validator: (value) => value!.length > 8 ? null : 'Password minimal 8 karakter', obscure: true),
+                  ],
+                ),
+                const SizedBox(height: 50),
+                PrimaryButton(label: "Sign Up", onPressed: signUp),
+                const SizedBox(
+                  height: 20,
+                ),
+                Center(
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const SignInPages()),
+                        MaterialPageRoute(
+                          builder: (context) => const SignInPages(),
+                        ),
                       );
-                    }
-                  },
-                  child: Text(
-                    'Sign Up',
-                    style: buttonTextStyle,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Center(
-                child: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SignInPages(),
-                      ),
-                    );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 70.0),
-                    child: Text(
-                      'Back to Sign In',
-                      style: GoogleFonts.poppins(
-                        color: const Color(0xffB3B5C4),
-                        fontSize: 14,
-                        fontWeight: FontWeight.w300,
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 70.0),
+                      child: Text(
+                        'Back to Sign In',
+                        style: GoogleFonts.poppins(
+                          color: const Color(0xffB3B5C4),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w300,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
     );
-  }
-
-  bool _validateInput() {
-    if (fullName.text.isEmpty ||
-        phone.text.isEmpty ||
-        emailController.text.isEmpty ||
-        password.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Mohon isi semua inputan.'),
-        ),
-      );
-      return false;
-    }
-    return true;
   }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:importan_skripsi/models/user_model.dart';
+import 'package:importan_skripsi/services/db.dart';
 import 'package:importan_skripsi/theme.dart';
 import 'package:importan_skripsi/widgets/information_tile.dart';
 
@@ -10,8 +12,19 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  UserModel? user;
   // final _userStream =
   //     FirebaseFirestore.instance.collection('DataInformation').snapshots();
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  void getData() async {
+    user = await Database.getUser();
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,14 +42,11 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Hallo Bebee',
-                    style: subTitleTextStyle.copyWith(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w600,
-                        color: primaryColor),
+                    'Hallo ${user?.name}',
+                    style: subTitleTextStyle.copyWith(fontSize: 24, fontWeight: FontWeight.w600, color: primaryColor),
                   ),
                   Text(
-                    '@bebee',
+                    '@${user?.name?.toLowerCase().replaceAll(' ', '')}',
                     style: titleTextStyle.copyWith(
                       fontSize: 16,
                     ),

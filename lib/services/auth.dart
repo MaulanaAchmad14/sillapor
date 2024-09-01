@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:importan_skripsi/models/user_model.dart';
 import 'package:importan_skripsi/services/db.dart';
 
@@ -13,12 +14,12 @@ class AuthService {
     }
   }
 
-  static Future<void> register({required String email, required String password, required UserModel user}) async {
+  static Future<void> register({required String email, required String password, required String image, required UserModel user}) async {
     try {
       final userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
       final uid = userCredential.user?.uid;
-
       await Database.createUser(uid: uid!, user: user);
+      // await FirebaseStorage.instance.ref(uid).putString(image);
     } on FirebaseAuthException catch (e) {
       throw Exception(e.message);
     } catch (e) {

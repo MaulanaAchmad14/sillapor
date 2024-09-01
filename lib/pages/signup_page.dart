@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'dart:io';
 
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +22,7 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   bool isEmailValid = true;
   bool isUploaded = false;
-  String? imgString;
+  File? photo;
 
   final nameText = TextEditingController();
   final phoneText = TextEditingController();
@@ -43,14 +43,14 @@ class _SignUpPageState extends State<SignUpPage> {
 
   void signUp() async {
     try {
-      if (imgString == null && mounted) {
+      if (photo == null && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Photo cannot be empty')));
         return;
       }
 
       if (key.currentState?.validate() ?? false) {
         final user = UserModel(name: nameText.text, phone: phoneText.text);
-        await AuthService.register(email: emailText.text, password: passwordText.text, image: imgString!, user: user);
+        await AuthService.register(email: emailText.text, password: passwordText.text, image: photo!, user: user);
         if (mounted) Navigator.pushNamed(context, '/home');
       }
     } catch (e) {
@@ -65,19 +65,18 @@ class _SignUpPageState extends State<SignUpPage> {
         child: InkWell(
           onTap: () async {
             final picker = ImagePicker();
-            final file = await picker.pickImage(source: ImageSource.camera);
+            final file = await picker.pickImage(source: ImageSource.gallery);
             if (file != null) {
-              final fileBytes = await file.readAsBytes();
-              imgString = base64Encode(fileBytes);
+              photo = File(file.path);
               setState(() {});
             }
           },
           child: Column(
             children: [
-              if (imgString == null) ...[
+              if (photo == null) ...[
                 Image.asset('assets/upload_pic.png', width: 120, height: 120),
               ] else ...[
-                ClipRRect(borderRadius: BorderRadius.circular(100), child: Image.memory(base64Decode(imgString!), width: 120, height: 120, fit: BoxFit.cover)),
+                ClipRRect(borderRadius: BorderRadius.circular(100), child: Image.file(photo!, width: 120, height: 120, fit: BoxFit.cover)),
               ]
             ],
           ),

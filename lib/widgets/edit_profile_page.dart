@@ -1,9 +1,13 @@
-import 'dart:typed_data';
+import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:importan_skripsi/models/user_model.dart';
+import 'package:importan_skripsi/services/db.dart';
 import 'package:importan_skripsi/theme.dart';
-import 'package:importan_skripsi/utils.dart';
+import 'package:importan_skripsi/widgets/primary_button.dart';
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
@@ -13,13 +17,54 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  Uint8List? _image;
+  UserModel? user;
+  String? photoUrl;
+  File? photo;
+  final nameText = TextEditingController();
+  final emailText = TextEditingController();
+  final passwordText = TextEditingController();
+  // final _userStream =
+  //     FirebaseFirestore.instance.collection('DataInformation').snapshots();
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
 
-  void selectImage() async {
-    Uint8List img = await pickImage(ImageSource.gallery);
-    setState(() {
-      _image = img;
-    });
+  void getData() async {
+    user = await Database.getUser();
+    photoUrl = await FirebaseStorage.instance.ref(FirebaseAuth.instance.currentUser?.uid).getDownloadURL();
+    setState(() {});
+  }
+
+  void update() async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (photo != null) {
+      await FirebaseStorage.instance.ref(uid).putFile(photo!);
+    }
+
+    if (nameText.text.isNotEmpty) {
+      await Database.createUser(uid: uid!, user: UserModel(name: nameText.text, phone: user?.phone));
+    }
+
+    if (passwordText.text.isNotEmpty) {
+      FirebaseAuth.instance.currentUser?.updatePassword(passwordText.text);
+    }
+
+    if (emailText.text.isNotEmpty) {
+      FirebaseAuth.instance.currentUser?.updateEmail(emailText.text);
+    }
+
+    if (mounted) Navigator.pop(context);
+    if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Berhasil update data')));
+  }
+
+  @override
+  void dispose() {
+    nameText.dispose();
+    emailText.dispose();
+    passwordText.dispose();
+    super.dispose();
   }
 
   @override
@@ -62,43 +107,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ),
             ),
             TextFormField(
+              controller: nameText,
               style: subTitleTextStyle,
               decoration: InputDecoration(
-                hintText: 'Bebee',
-                hintStyle: subTitleTextStyle.copyWith(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w400,
-                ),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: primaryColor,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    Widget usernameInput() {
-      return Container(
-        margin: const EdgeInsets.only(
-          top: 30,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Name',
-              style: titleTextStyle.copyWith(
-                fontSize: 13,
-              ),
-            ),
-            TextFormField(
-              style: subTitleTextStyle,
-              decoration: InputDecoration(
-                hintText: '@Bebee',
+                hintText: user?.name ?? '',
                 hintStyle: subTitleTextStyle.copyWith(
                   fontSize: 13,
                   fontWeight: FontWeight.w400,
@@ -130,9 +142,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ),
             ),
             TextFormField(
+              controller: emailText,
               style: subTitleTextStyle,
               decoration: InputDecoration(
-                hintText: 'Bebee@gmail.com',
+                hintText: FirebaseAuth.instance.currentUser?.email ?? '',
                 hintStyle: subTitleTextStyle.copyWith(
                   fontSize: 13,
                   fontWeight: FontWeight.w400,
@@ -164,9 +177,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ),
             ),
             TextFormField(
+              controller: passwordText,
+              obscureText: true,
               style: subTitleTextStyle,
               decoration: InputDecoration(
-                hintText: 'Bebee',
+                hintText: '',
                 hintStyle: subTitleTextStyle.copyWith(
                   fontSize: 13,
                   fontWeight: FontWeight.w400,
@@ -200,29 +215,55 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   margin: EdgeInsets.only(
                     top: defaultMargin,
                   ),
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: AssetImage(
-                        'assets/show_image.png',
-                      ),
-                    ),
-                  ),
+                  decoration: photo != null
+                      ? BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: FileImage(
+                              photo!,
+                            ),
+                          ),
+                        )
+                      : photoUrl != null
+                          ? BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                image: NetworkImage(
+                                  photoUrl!,
+                                ),
+                              ),
+                            )
+                          : const BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                image: AssetImage(
+                                  'assets/show_image.png',
+                                ),
+                              ),
+                            ),
                 ),
                 Positioned(
-                  child: IconButton(
-                    onPressed: selectImage,
-                    icon: Icon(Icons.add_a_photo),
-                  ),
                   bottom: -15,
                   left: 60,
+                  child: IconButton(
+                    onPressed: () async {
+                      final picker = ImagePicker();
+                      final file = await picker.pickImage(source: ImageSource.gallery);
+                      if (file != null) {
+                        photo = File(file.path);
+                        setState(() {});
+                      }
+                    },
+                    icon: const Icon(Icons.add_a_photo),
+                  ),
                 ),
               ],
             ),
             nameInput(),
-            usernameInput(),
             emailInput(),
             passwordInput(),
+            const SizedBox(height: 50),
+            PrimaryButton(label: "Update", onPressed: update),
           ],
         ),
       );

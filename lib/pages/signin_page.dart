@@ -72,7 +72,7 @@ class _SignInPagesState extends State<SignInPages> {
                   const SizedBox(height: 10),
                   Text('Password', style: titleTextStyle.copyWith(fontSize: 14)),
                   const SizedBox(height: 8),
-                  TextInput(controller: passwordText, validator: (value) => value!.length > 8 ? null : 'Password minimal 8 karakter'),
+                  TextInput(controller: passwordText, validator: (value) => value!.length > 8 ? null : 'Password minimal 8 karakter', obscure: true),
                   const SizedBox(height: 40),
                   PrimaryButton(label: "Sign In", onPressed: () => login()),
                   Padding(

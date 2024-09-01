@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 
 class TextInput extends StatelessWidget {
-  const TextInput({super.key, required this.controller, this.onChanged, this.validator});
+  const TextInput({super.key, required this.controller, this.onChanged, this.validator, this.obscure = false});
   final TextEditingController controller;
   final void Function(String)? onChanged;
   final String? Function(String?)? validator;
+  final bool obscure;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      obscureText: obscure,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: validator,
       controller: controller,
